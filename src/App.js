@@ -4,30 +4,31 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 // Import your components/pages
 import Home from './pages/home';
-import About from './pages/about';
-import Contact from './pages/contact';
+import Order from './pages/order';
+import Bill from './pages/bill';
+import './styles/navstyle.css';
 
 function App() {
   return (
     <Router>
       <div>
         {/* Navigation Menu */}
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-          <div class="container-fluid">
-            <a class="navbar-brand" href="/">Menu</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
+        <nav className="navbar navbar-expand-lg bg-body-red">
+          <div className="container-fluid">
+            <a className="navbar-brand" href="/">Sushi Station</a>
+            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="/">Home</a>
+            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                <li className="nav-item">
+                  <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="about">About</a>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/order">Order</Link>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="contact">Contact</a>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/bill">Bill</Link>
                 </li>
               </ul>
             </div>
@@ -37,8 +38,8 @@ function App() {
         {/* Define Routes */}
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path="/order" element={<Order />} />
+          <Route path="/bill" element={<Bill />} />
         </Routes>
       </div>
     </Router>
