@@ -1,104 +1,107 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import img1 from "../img/01.png";
 import img2 from "../img/02.png";
 import img3 from "../img/03.png";
 import img4 from "../img/04.jpg";
-import '../styles/order.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../styles/order.css";
 
-function order() {
-    // ฟังก์ชันที่ใช้จัดการการคลิก
-    const addToOrder = (itemName, itemPrice) => {
-        alert("คุณเลือก: " + itemName + " ราคา " + itemPrice + " บาท");
+function Order() {
+    const navigate = useNavigate();
+    const [cart, setCart] = useState([]);
+
+    // รายการอาหาร
+    const menuItems = [
+        { id: 1, name: "Spicy Tuna Maki", price: 100, img: img1 },
+        { id: 2, name: "Mango Maki", price: 100, img: img2 },
+        { id: 3, name: "Salmon Maki", price: 100, img: img3 },
+        { id: 4, name: "Tuna Maki", price: 100, img: img4 },
+    ];
+
+    // ฟังก์ชันเพิ่มสินค้าในคำสั่งซื้อ
+    const addToCart = (item) => {
+        setCart((prevCart) => {
+            const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
+            if (existingItem) {
+                return prevCart.map((cartItem) =>
+                    cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem
+                );
+            } else {
+                return [...prevCart, { ...item, quantity: 1 }];
+            }
+        });
+    };
+
+    // ฟังก์ชันลบสินค้าออกจากตะกร้า
+    const removeFromCart = (id) => {
+        setCart((prevCart) => prevCart.filter((item) => item.id !== id));
+    };
+
+    // ฟังก์ชันคำนวณยอดรวมและไปหน้า bill.js
+    const handleCheckout = () => {
+        if (cart.length === 0) {
+            alert("กรุณาเลือกเมนูก่อน!");
+            return;
+        }
+
+        const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const discount = subtotal * 0.1; // ส่วนลด 10%
+        const total = subtotal - discount;
+
+        navigate("/bill", { state: { orderDetails: cart, discount, total } });
     };
 
     return (
-        <div className="order">
-            <div className="container mt-4">
-                <h1 className="text-center">Sushi Sensation</h1>
-                <h2 className="mt-4">รายการอาหาร</h2>
+        <div className="container mt-4">
+            <h1 className="text-center">Sushi Sensation</h1>
+            <h2 className="mt-4">เมนูอาหาร</h2>
 
-                <div className="menu-item">
-                    <div className="row">
+            {menuItems.map((item) => (
+                <div key={item.id} className="menu-item card mb-3 p-3 shadow-sm">
+                    <div className="row align-items-center">
                         <div className="col-md-4">
-                            <img src={img1} alt="SPICY TUNA MAKI" />
+                            <img src={item.img} alt={item.name} className="img-fluid rounded" />
                         </div>
                         <div className="col-md-8">
-                            <h3>SPICY TUNA MAKI</h3>
-                            <p>ราคา: 100 บาท</p>
-                            <p>ซูชิทูน่ารสเผ็ด เสิร์ฟพร้อมแตงกวาและอะโวคาโด</p>
-                            <button
-                                className="btn-order"
-                                onClick={() => addToOrder('SPICY TUNA MAKI', 999)}
-                            >
-                                เลือกเมนู
+                            <h3>{item.name}</h3>
+                            <p>ราคา: {item.price} บาท</p>
+                            <button className="btn btn-success" onClick={() => addToCart(item)}>
+                                เพิ่มลงในคำสั่งซื้อ
                             </button>
                         </div>
                     </div>
                 </div>
+            ))}
 
-                <div className="menu-item">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <img src={img2} alt="Mango Maki" />
+            {/* แสดงรายการที่เลือก */}
+            <div className="mt-4 p-3 border rounded bg-light">
+                <h3>🛒 รายการที่เลือก</h3>
+                {cart.length > 0 ? (
+                    cart.map((item) => (
+                        <div key={item.id} className="d-flex justify-content-between align-items-center border-bottom py-2">
+                            <span>
+                                <strong>{item.name}</strong> x {item.quantity}
+                            </span>
+                            <div>
+                                <button className="btn btn-sm btn-danger" onClick={() => removeFromCart(item.id)}>
+                                    ลบ
+                                </button>
+                            </div>
                         </div>
-                        <div className="col-md-8">
-                            <h3>Mango Maki</h3>
-                            <p>ราคา: 100 บาท</p>
-                            <p>โรลกุ้งเทมปุระ แตงกวา และครีมชีส พร้อมอะโวคาโดสด</p>
-                            <button
-                                className="btn-order"
-                                onClick={() => addToOrder('Mango Maki', 599)}
-                            >
-                                เลือกเมนู
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                    ))
+                ) : (
+                    <p className="text-muted">ยังไม่มีรายการอาหารที่เลือก</p>
+                )}
+            </div>
 
-                <div className="menu-item">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <img src={img3} alt="Mango Maki" />
-                        </div>
-                        <div className="col-md-8">
-                            <h3>Mango Maki</h3>
-                            <p>ราคา: 100 บาท</p>
-                            <p>โรลกุ้งเทมปุระ แตงกวา และครีมชีส พร้อมอะโวคาโดสด</p>
-                            <button
-                                className="btn-order"
-                                onClick={() => addToOrder('Mango Maki', 599)}
-                            >
-                                เลือกเมนู
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="menu-item">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <img src={img4} alt="Mango Maki" />
-                        </div>
-                        <div className="col-md-8">
-                            <h3>Mango Maki</h3>
-                            <p>ราคา: 100 บาท</p>
-                            <p>โรลกุ้งเทมปุระ แตงกวา และครีมชีส พร้อมอะโวคาโดสด</p>
-                            <button
-                                className="btn-order"
-                                onClick={() => addToOrder('Mango Maki', 599)}
-                            >
-                                เลือกเมนู
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="text-center mt-4">
-                    <a href="index.html" className="btn btn-secondary">กลับสู่หน้าแรก</a>
-                </div>
+            <div className="text-center mt-4">
+                <button onClick={handleCheckout} className="btn btn-danger btn-lg">
+                    ไปที่หน้าสรุปคำสั่งซื้อ
+                </button>
             </div>
         </div>
     );
 }
 
-export default order;
+export default Order;

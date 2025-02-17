@@ -4,7 +4,7 @@ import img2 from "../img/02.png";
 import img3 from "../img/03.png";
 import food1 from "../img/food1.png";
 import food2 from "../img/food2.png";
-import food3 from "../img/food3.jpg";
+import food3 from "../img/04.jpg";
 import '../styles/homestyle.css';
 
 function Home () {

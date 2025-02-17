@@ -1,0 +1,33 @@
+.bill-container {
+    max-width: 600px;
+    margin: auto;
+    background-color: #1E1E1E;
+    color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+h2 {
+    color: #C70039;
+}
+
+.summary-container {
+    background-color: #222;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+button {
+    background-color: #C70039;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+button:hover {
+    background-color: #FF5733;
+}
